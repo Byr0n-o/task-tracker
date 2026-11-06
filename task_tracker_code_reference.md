@@ -1,5 +1,5 @@
 # Task Tracker — Code Reference
-Updated: 2026-09-26 (through Lesson 5.3; marking convention added)
+Updated: 2026-11-05 (through Lesson 9: Git, mark done, shared storage)
 
 This sheet is a field guide, not a textbook. Each entry is something you have already typed.
 
@@ -72,7 +72,7 @@ HTML is sneakier. **Tag names are not yours.** You may not invent `<header1>` or
 | Python | `main.py`, `app.py`, `file_practice.py` | Logic: lists, files, decisions |
 | HTML | `templates/*.html` | Structure of the page |
 | Jinja | pieces *inside* those HTML files | Fill the page with Python data |
-| CSS | not yet | Look and layout (Lesson 6) |
+| CSS | `static/style.css` | Look and layout |
 
 Jinja is not HTML and not Python. It is a small language that *lives in HTML files* and is processed *before* the browser sees the page.
 
@@ -481,12 +481,90 @@ save_tasks(task_list)
 
 ---
 
-## 10. What we will add later
+## 10. Template inheritance (Lesson 5.4)
 
-When we use a new tool, it should be appended here:
+`base.html` = the frame. Child pages fill named holes.
 
-- Lesson 5.4 — `{% extends %}`, `{% block %}` (if not already comfortable)
-- Lesson 6 — CSS: `class`, `#id`, `color`, `margin`, `<link rel="stylesheet">`
-- Later — maybe a shared `storage.py` so `main.py` and `app.py` do not copy `save_tasks`
+| Piece | Label | Role |
+|---|---|---|
+| `{% extends "base.html" %}` | REQUIRED `extends`; YOURS TEXT filename | Child uses that frame. Must be first Jinja line |
+| `{% block title %}` | REQUIRED `block`/`endblock`; YOURS name `title` | Hole for the browser tab |
+| `{% block content %}` | REQUIRED words; YOURS name `content` | Hole for the page body |
+| `<nav>` | REQUIRED tag | Navigation region |
+| `Task Tracker` default inside title block | YOURS TEXT | Fallback if a child skips the title block |
 
-Last updated after: templates + document skeleton + navigation (5.3).
+Block names must match between base and child. If the base says `content` and the child says `body`, the hole stays empty.
+
+## 11. CSS (Lesson 6)
+
+CSS lives in `static/style.css` and is linked from `base.html`.
+
+| Piece | Label | Role |
+|---|---|---|
+| `<link rel="stylesheet" href="...">` | REQUIRED tag; FIXED VOCAB `rel` | Attach the CSS file |
+| `{{ url_for('static', filename='style.css') }}` | REQUIRED Flask helper; YOURS filename | Build the `/static/style.css` URL |
+| `body { ... }` | REQUIRED selector (tag name) | Style every body |
+| `.empty` | REQUIRED dot + YOURS class name | Style only elements with `class="empty"` |
+| `font-family`, `margin`, `color`, `display`, `flex` | FIXED VOCAB | CSS property names |
+| `Arial`, `#f4f1ea`, `1rem`, `flex` | YOURS values | What it should look like |
+| `li span { flex: 1; }` | YOURS selector | Let the text stretch so buttons stay aligned on the right |
+
+`class` is an HTML attribute (REQUIRED name, YOURS value). The matching CSS starts with a dot.
+
+## 12. Shared storage module (Lesson 7)
+
+`storage.py` holds the file logic. `main.py` and `app.py` both import it.
+
+| Piece | Label | Role |
+|---|---|---|
+| `from storage import load_tasks, save_tasks` | REQUIRED `from`/`import`; YOURS module and function names | Bring the shared tools into this file |
+| `FILENAME = "tasks.txt"` | YOURS name; YOURS TEXT | Defined once in `storage.py` |
+
+Change the save/load logic in one place; both the terminal and the website pick it up.
+
+## 13. Mark done (Lesson 8)
+
+Each task is now a dictionary: `{"done": False, "text": "Buy coffee"}`.
+
+| Piece | Label | Role |
+|---|---|---|
+| `{"done": ..., "text": ...}` | REQUIRED braces; YOURS keys | One task with two named pieces |
+| `task["done"]` / `task.text` | YOURS key | Look up the flag (Python vs Jinja) |
+| `"1" if task["done"] else "0"` | REQUIRED `if`/`else`; FIXED VOCAB `"1"`/`"0"` | Write the flag to the file |
+| `line.split("|", 1)` | REQUIRED method; FIXED VOCAB `"|"` | Split on the first pipe |
+| `task["done"] = not task["done"]` | YOURS key; REQUIRED `not` | Flip True ↔ False |
+| `@app.route("/done", methods=["POST"])` | REQUIRED decorator; YOURS path | New route that toggles done |
+| `.done { text-decoration: line-through; }` | YOURS class; FIXED VOCAB property | Strikethrough for finished tasks |
+
+Old plain lines (no pipe) still load as not-done.
+
+## 14. Git (Lesson 9)
+
+Git saves versions of the project locally. `git push` sends those versions to GitHub.
+
+| Command | Role |
+|---|---|
+| `git init` | Create a hidden `.git` folder (local history) |
+| `git add .` or `git add path` | Stage files for the next commit |
+| `git status` | Show staged, unstaged, and untracked files |
+| `git diff` | Show unstaged changes (red/green lines) |
+| `git commit -m "message"` | Save a local snapshot with a caption |
+| `git log --oneline` | Compact list of commits |
+| `git show` | Show a commit and its diff (press `q` to quit the pager) |
+| `git show HEAD~1:path` | See a file as it was one commit ago |
+| `git remote add origin URL` | Name the GitHub address `origin` |
+| `git push -u origin main` | Upload unpushed commits and remember the link |
+
+**Commit vs push:**  
+`commit` = photo in your local drawer.  
+`push` = send every local photo that GitHub does not already have.
+
+`.gitignore` skips `.venv/`, `__pycache__/`, and `.idea/`.
+
+## 15. What we will add later
+
+- Edit a task
+- Deploy the site
+- More Git (branches, pull)
+
+Last updated after: Git + mark done + shared storage (Lesson 9).
