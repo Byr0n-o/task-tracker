@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Your Tasks{% endblock %}
+
+{% block content %}
+        <h1>Your Tasks</h1>
+        <ul>
+            {% if tasks %}
+                <ul>
+                    {% for number, task in tasks %}
+                        <li>
+                            <span class="{% if task.done %}done{% endif %}">{{ task.text }}</span>
+                            <form action="/done" method="POST">
+                                <input type="hidden" name="number" value="{{ number }}">
+                                <button type="submit">
+                                    {% if task.done %}Undo{% else %}Done{% endif %}
+                                </button>
+                            </form>
+                            <form action="/remove" method="POST">
+                                <input type="hidden" name="name" value="{{ number }}">
+                                <button type="submit">Remove</button>
+                            </form>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="empty">No Tasks Yet.</p>
+            {% endif %}
+        </ul>
+
+        <form action="/tasks" method="POST" class="add-form">
+            <input type="text" name="task">
+            <button type="submit">Add</button>
+        </form>
+{% endblock %}

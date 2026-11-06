@@ -1,0 +1,65 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    max-width: 40rem;
+    margin: 2rem auto;
+    background: #f4f1ea;
+    color: #222;
+}
+
+nav a {
+    margin-right: 1rem;
+}
+
+nav {
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #ccc;
+}
+
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+li {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #e0dcd4;
+}
+
+li span {
+    flex: 1;
+}
+
+form {
+    margin-top: 1rem;
+}
+
+li form {
+    margin-top: 0;
+}
+
+input[type="text"] {
+    padding: 0.4rem 0.5rem;
+    font-size: 1rem;
+}
+
+button {
+    padding: 0.4rem 0.7rem;
+    cursor: pointer;
+}
+
+.empty {
+    color: #666;
+}
+
+.add-form input[type="text"] {
+    min-width: 16rem;
+}
+
+.done {
+    text-decoration: line-through;
+    color: #888;
+}
