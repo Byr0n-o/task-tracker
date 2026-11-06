@@ -1,4 +1,4 @@
 0|Email the team
-0|Grok is now in pyCharm
+1|Grok is now in pyCharm
 0|Im humming
-1|Celebrate
+0|Celebrate

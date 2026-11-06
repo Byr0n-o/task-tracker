@@ -1,5 +1,5 @@
 # Task Tracker — Code Reference
-Updated: 2026-11-05 (through Lesson 10: edit task, FAQ, glossary)
+Updated: 2026-11-05 (through Lesson 11: terminal done, done-flag round trip)
 
 This sheet is a field guide, not a textbook. Each entry is something you have already typed.
 
@@ -538,6 +538,49 @@ Each task is now a dictionary: `{"done": False, "text": "Buy coffee"}`.
 
 Old plain lines (no pipe) still load as not-done.
 
+## 13b. Done flag round trip
+
+The file never contains the word `done`. It stores `0` or `1`. Python names that yes/no `"done"`.
+
+```text
+tasks.txt          0|Email team
+                   1|Celebrate
+
+load_tasks()       {"done": False, "text": "Email team"}
+                   {"done": True,  "text": "Celebrate"}
+
+menu / website     task["done"]  →  [ ] or [x]  /  Done or Undo
+
+save_tasks()       0|Email team
+                   1|Celebrate
+```
+
+| Step | Code | What happens |
+|---|---|---|
+| Load | `done_flag == "1"` | `"1"` becomes `True`, `"0"` becomes `False`, stored as `task["done"]` |
+| Use | `task["done"]` | Menu prints `[x]` or `[ ]`; website shows Done/Undo and strikethrough |
+| Toggle | `task["done"] = not task["done"]` | Flip True ↔ False |
+| Save | `"1" if task["done"] else "0"` | Write `1|text` or `0|text` back to the file |
+
+`"done"` is a key you chose. The file only has `0` and `1`. Once you pick the key, every `task["done"]` must use that spelling.
+
+## 13c. Brackets
+
+| Shape | Name | Job in Python |
+|---|---|---|
+| `()` | parentheses | Call a function, group, or define parameters |
+| `[]` | square brackets | List, or look up by position / key |
+| `{}` | curly braces | Dictionary |
+
+```python
+load_tasks()                   # call
+tasks[number - 1]              # list lookup (0-based)
+task["done"]                   # dict lookup by key
+{"done": False, "text": line}  # dict literal
+```
+
+Jinja `{{ }}` and `{% %}`, and CSS `{ }`, are different languages using similar characters.
+
 ## 14. Git (Lesson 9)
 
 Git saves versions of the project locally. `git push` sends those versions to GitHub.
@@ -655,8 +698,8 @@ Git opened a pager. `q` quits it and returns to the terminal.
 
 ## 18. What we will add later
 
+- Terminal edit
 - Deploy the site
 - More Git (branches, pull)
-- Terminal “mark done” / edit
 
-Last updated after: edit task + FAQ + glossary (Lesson 10).
+Last updated after: terminal done toggle, done-flag round trip, brackets (Lesson 11).

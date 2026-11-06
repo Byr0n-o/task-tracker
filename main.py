@@ -10,6 +10,8 @@ while True:
     print("2. View tasks")
     print("3. Quit")
     print("4. Remove a task")
+    print("5. Mark done / undo")
+
 
     choice = input("Choose 1, 2, 3, or 4: ").strip()
 
@@ -28,7 +30,8 @@ while True:
         else:
             print("Your Tasks:")
             for number, task in enumerate(tasks, start=1):
-                print(f" {number}. {task}")
+                mark = "x" if task["done"] else " "
+                print(f" {number}. [{mark}] {task['text']}")
 
     elif choice == "3":
         print("Goodbye.")
@@ -55,6 +58,26 @@ while True:
                 print("Removed:", removed)
                 save_tasks(tasks)
 
+    elif choice == "5":
+        if len(tasks) == 0:
+            print("No tasks to update.")
+        else:
+            print("Your Tasks:")
+            for number, task in enumerate(tasks, start=1):
+                mark = "x" if task["done"] else " "
+                print(f" {number}. [{mark}] {task['text']}")
+            raw = input("Which number do you want to update? ").strip()
+            try:
+                number = int(raw)
+            except ValueError:
+                print("Please type a number.")
+                continue
+            if number < 1 or number > len(tasks):
+                print("That number is not on the list.")
+            else:
+                tasks[number -1]["done"] = not tasks[number - 1]["done"]
+                save_tasks(tasks)
+                print("Updated.")
 
     else:
         print("Please type 1, 2, 3, or 4.")
