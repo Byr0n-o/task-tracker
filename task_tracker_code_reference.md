@@ -1,5 +1,5 @@
 # Task Tracker — Code Reference
-Updated: 2026-11-05 (through Lesson 9: Git, mark done, shared storage)
+Updated: 2026-11-05 (through Lesson 10: edit task, FAQ, glossary)
 
 This sheet is a field guide, not a textbook. Each entry is something you have already typed.
 
@@ -561,10 +561,102 @@ Git saves versions of the project locally. `git push` sends those versions to Gi
 
 `.gitignore` skips `.venv/`, `__pycache__/`, and `.idea/`.
 
-## 15. What we will add later
+## 15. Edit a task (Lesson 10)
 
-- Edit a task
+A form posts the task number and the new text to `/edit`. The route updates only `["text"]` and saves.
+
+| Piece | Label | Role |
+|---|---|---|
+| `name="text"` on the input | YOURS | Key the form sends |
+| `request.form.get("text")` | YOURS (must match the HTML `name`) | Read that field |
+| `raw = request.form.get("number", "")` | YOURS variable | Unprocessed number string |
+| `task_list[number - 1]["text"] = new_text` | YOURS keys | Replace wording; leave `done` alone |
+
+**Form names vs Python variables:**  
+The `name="..."` in HTML is the envelope label. `request.form.get("...")` must use the same spelling. The variable you store it in (`raw`, `new_text`) is only for you — it does not have to match.
+
+## 16. FAQ
+
+**Why is it `request.form.get("number")` and not just the variable?**  
+Because the browser sends fields by the `name` attribute. Python looks up that key. The variable (`raw`) is only where you park the result.
+
+**Why `number - 1`?**  
+Humans count from 1. Python lists count from 0. Task 2 is index 1.
+
+**Why redirect after POST?**  
+So a refresh does not submit the form again (duplicate add, edit, or delete).
+
+**Why `from storage import ...`?**  
+So `main.py` and `app.py` share one definition of save/load. Change it once.
+
+**Commit vs push?**  
+Commit = local snapshot. Push = send unpushed commits to GitHub.
+
+**Why press `q` in `git show`?**  
+Git opened a pager. `q` quits it and returns to the terminal.
+
+## 17. Glossary by language
+
+### Python
+| Term | Meaning |
+|---|---|
+| keyword | Reserved word (`def`, `if`, `for`, `with`, `return`) |
+| function | Named block you define with `def` and call with `()` |
+| parameter | Name in the `def` parentheses (the slot) |
+| argument | Value you pass when you call the function |
+| variable | Name you assign a value to |
+| method | Function that belongs to an object (`file.write`, `str.strip`) |
+| list | Ordered collection `[...]`, 0-based |
+| dictionary | Labeled collection `{"done": False, "text": "..."}` |
+| module | A `.py` file you can import |
+| exception | Error you can catch with `try` / `except` |
+
+### HTML
+| Term | Meaning |
+|---|---|
+| tag | Element name in angle brackets (`<h1>`, `<form>`) |
+| attribute | Name/value inside a tag (`name="text"`, `href="/tasks"`) |
+| form | Group of fields submitted together |
+| `name` | Attribute that becomes the key in `request.form` |
+
+### Jinja
+| Term | Meaning |
+|---|---|
+| `{{ }}` | Print a value |
+| `{% %}` | Instruction (`for`, `if`, `block`, `extends`) |
+| `extends` | Use another template as the frame |
+| `block` | Named hole the child fills |
+
+### CSS
+| Term | Meaning |
+|---|---|
+| selector | Who to style (`body`, `.empty`, `li span`) |
+| property | What to change (`color`, `display`, `flex`) |
+| class | HTML attribute; CSS selects it with a leading dot |
+
+### Flask
+| Term | Meaning |
+|---|---|
+| route | URL path attached to a function (`@app.route`) |
+| `request` | The incoming browser request |
+| `request.form` | Posted form fields, looked up by `name` |
+| `redirect` | Tell the browser to GET another URL |
+| `render_template` | Fill an HTML file and return it |
+
+### Git
+| Term | Meaning |
+|---|---|
+| commit | Local snapshot with a message |
+| stage (`git add`) | Mark files for the next commit |
+| push | Upload commits the remote does not have |
+| `HEAD` | Current commit |
+| origin | Default name for the GitHub remote |
+| pager | Viewer `git show` opens; quit with `q` |
+
+## 18. What we will add later
+
 - Deploy the site
 - More Git (branches, pull)
+- Terminal “mark done” / edit
 
-Last updated after: Git + mark done + shared storage (Lesson 9).
+Last updated after: edit task + FAQ + glossary (Lesson 10).

@@ -54,6 +54,28 @@ def mark_done():
     save_tasks(task_list)
     return redirect("/tasks")
 
+@app.route("/edit", methods=["POST"])
+def edit_task():
+    raw = request.form.get("number", "").strip()
+    new_text = request.form.get("text", "").strip()
+
+    try:
+        number = int(raw)
+    except ValueError:
+        return redirect("/tasks")
+
+    if new_text == "":
+        return redirect("/tasks")
+
+    task_list = load_tasks()
+
+    if number < 1 or number > len(task_list):
+        return redirect("/tasks")
+
+    task_list[number -1]["text"] = new_text
+    save_tasks(task_list)
+    return redirect("/tasks")
+
 if __name__ == "__main__":
     app.run(debug=True)
 

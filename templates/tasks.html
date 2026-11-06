@@ -9,7 +9,11 @@
                 <ul>
                     {% for number, task in tasks %}
                         <li>
-                            <span class="{% if task.done %}done{% endif %}">{{ task.text }}</span>
+                            <form action="/edit" method="POST" class="edit-form">
+                                <input type="hidden" name="number" value="{{ number }}">
+                                <input type="text" name="text" value="{{ task.text }}" class="{% if task.done %}done{% endif %}">
+                                <button type="submit">Save</button>
+                            </form>
                             <form action="/done" method="POST">
                                 <input type="hidden" name="number" value="{{ number }}">
                                 <button type="submit">
