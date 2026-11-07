@@ -1,4 +1,6 @@
-FILENAME="tasks.txt"
+import os
+
+FILENAME = os.environ.get("TASKS_FILE", "tasks.txt")
 def save_tasks(tasks):
     with open(FILENAME, "w") as file:
         for task in tasks:
