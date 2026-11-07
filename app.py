@@ -11,7 +11,7 @@ def show_tasks():
         task = request.form.get("task", "").strip()
         if task != "":
             task_list = load_tasks()
-            task_list.append(task)
+            task_list.append({"done": False, "text": task})
             save_tasks(task_list)
         return redirect("/tasks")
 
