@@ -98,13 +98,13 @@ while True:
                 print("That number is not on the list.")
             else:
                 current = tasks[number -1]["text"]
-                new_text = input(f"New text (was: {current}): ").strip()
+                new_text = input(f"New text: ").strip()
                 if new_text == "":
                     print("Please type a new text.")
                 else:
                     tasks[number -1]["text"] = new_text
                     save_tasks(tasks)
-                    print("Updated.")
+                    print(f"Now: {new_text} (was: {current})")
 
     else:
         print("Please type 1, 2, 3, or 4.")
