@@ -1,5 +1,5 @@
 # Task Tracker — Code Reference
-Updated: 2026-11-05 (through Lesson 11: terminal done, done-flag round trip)
+Updated: 2026-11-06 (through Lesson 14: deploy and live debugging)
 
 This sheet is a field guide, not a textbook. Each entry is something you have already typed.
 
@@ -638,6 +638,15 @@ Commit = local snapshot. Push = send unpushed commits to GitHub.
 **Why press `q` in `git show`?**  
 Git opened a pager. `q` quits it and returns to the terminal.
 
+**Why did Add crash with `string indices must be integers`?**  
+The new task was a plain string. `save_tasks` does `task["done"]`, which only works on a dictionary. Append `{"done": False, "text": task}`.
+
+**Why did Remove get a blank number?**  
+HTML `name` must match Python. `name="name"` sends the key `name`. `request.form.get("number")` looks for `number`. They must be the same word.
+
+**Why `load_tasks()` and not `load_tasks`?**  
+Without `()`, you have the function itself. With `()`, you run it and get the list. `len` needs the list.
+
 ## 17. Glossary by language
 
 ### Python
@@ -696,10 +705,38 @@ Git opened a pager. `q` quits it and returns to the terminal.
 | origin | Default name for the GitHub remote |
 | pager | Viewer `git show` opens; quit with `q` |
 
-## 18. What we will add later
+## 18. Deploy (Lesson 14)
 
-- Terminal edit
-- Deploy the site
-- More Git (branches, pull)
+The site runs on Render (free tier) from the GitHub repo. Local `127.0.0.1` is only your computer. The `onrender.com` URL is public.
 
-Last updated after: terminal done toggle, done-flag round trip, brackets (Lesson 11).
+| Piece | Role |
+|---|---|
+| `requirements.txt` | Lists `flask` and `gunicorn` so Render can install them |
+| Build command | `pip install -r requirements.txt` |
+| Start command | `gunicorn app:app` (file `app.py`, object `app`) |
+| `TASKS_FILE=/tmp/tasks.txt` | Render env var; `/tmp` is writable. Local still uses `tasks.txt` |
+| Free tier | Sleeps after ~15 min idle; `/tmp` can wipe on restart |
+
+```python
+import os
+FILENAME = os.environ.get("TASKS_FILE", "tasks.txt")
+```
+
+**Bugs we hit on deploy**
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| Add → 500 `string indices must be integers` | `append(task)` stored a string; `save_tasks` expects a dict | `append({"done": False, "text": task})` |
+| Remove did nothing; `raw` was blank | Hidden input was `name="name"` | Change to `name="number"` to match `request.form.get("number")` |
+| Remove → `object of type 'function' has no len()` | `task_list = load_tasks` (no call) | `task_list = load_tasks()` |
+| Writes failed on Render | Project folder not writable | `TASKS_FILE=/tmp/tasks.txt` |
+
+Render **Logs** show the real traceback. The browser only says “Internal Server Error.”
+
+## 19. What we will add later
+
+- Squarespace domain → Render
+- Persist tasks across sleep (database)
+- More Git (pull requests)
+
+Last updated after: deploy + live debugging (Lesson 14).
