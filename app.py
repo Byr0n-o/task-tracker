@@ -24,8 +24,7 @@ def remove_task():
     raw = request.form.get("number", "").strip()
     print("REMOVE raw=", repr(raw))
     print("REMOVE form=", dict(request.form))
-    task_list = load_tasks()
-    if raw in task_list:
+
     try:
         number = int(raw)
     except ValueError:
