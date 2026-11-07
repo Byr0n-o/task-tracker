@@ -22,14 +22,18 @@ def show_tasks():
 @app.route("/remove", methods=["POST"])
 def remove_task():
     raw = request.form.get("number", "").strip()
+    print("REMOVE raw=", repr(raw))
     try:
         number = int(raw)
     except ValueError:
+        print("REMOVE ValueError")
         return redirect("/tasks")
 
-    task_list = load_tasks()
+    task_list = load_tasks(
+    print("REMOVE number=", number, "len=", len(task_list))
 
     if number < 1 or number > len(task_list):
+        print("REMOVE out of range"))
         return redirect("/tasks")
 
     task_list.pop(number - 1)
