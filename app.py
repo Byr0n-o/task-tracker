@@ -29,11 +29,11 @@ def remove_task():
         print("REMOVE ValueError")
         return redirect("/tasks")
 
-    task_list = load_tasks(
+    task_list = load_tasks
     print("REMOVE number=", number, "len=", len(task_list))
 
     if number < 1 or number > len(task_list):
-        print("REMOVE out of range"))
+        print("REMOVE out of range")
         return redirect("/tasks")
 
     task_list.pop(number - 1)
