@@ -11,9 +11,14 @@ def show_tasks():
         task = request.form.get("task", "").strip()
         if task != "":
             task_list = load_tasks()
-            task_list.append({"done": False, "text": task})
+            task = request.form.get("task", "").strip()
+            due = request.form.get("due", "").strip()
+            if task == "":
+                return redirect("/tasks")
+            task_list = load_tasks()
+            task_list.append({"done": False, "due": due, "text": task})
             save_tasks(task_list)
-        return redirect("/tasks")
+            return redirect("/tasks")
 
     task_list = load_tasks()
     numbered = list(enumerate(task_list, start=1))

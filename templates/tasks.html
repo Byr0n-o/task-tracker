@@ -12,6 +12,9 @@
                             <form action="/edit" method="POST" class="edit-form">
                                 <input type="hidden" name="number" value="{{ number }}">
                                 <input type="text" name="text" value="{{ task.text }}" class="{% if task.done %}done{% endif %}">
+                                {% if task.due %}
+                                    <span class="due">due {{ task.due }}</span>
+                                {% endif %}
                                 <button type="submit">Save</button>
                             </form>
                             <form action="/done" method="POST">
@@ -33,7 +36,8 @@
         </ul>
 
         <form action="/tasks" method="POST" class="add-form">
-            <input type="text" name="task">
+            <input type="text" name="task" placeholder="Task">
+            <input type="date" name="due">
             <button type="submit">Add</button>
         </form>
 {% endblock %}
